@@ -11,17 +11,12 @@ public class AutoSortForSerial {
 
     public static <T extends Named> List<T> reCalScore(List<T> originList) {
         return originList.stream()
-                .sorted((o1, o2) -> SortScoreMap.getOrDefault(o2.getName(), 0f).compareTo(SortScoreMap.getOrDefault(o1.getName(), 0f)))
+                .sorted(Comparator.comparing(o -> SortScoreMap.getOrDefault(o.getFilterName(), Float.MAX_VALUE)))
                 .collect(Collectors.toList());
     }
 
     public static void updateStatic(String taskName, int itemNum, int filterNum, long timeCost) {
-        TaskRunStatic taskRunStatic = taskStatics.get(taskName);
-        if (taskRunStatic == null) {
-            taskRunStatic = new TaskRunStatic(taskName);
-            taskStatics.put(taskName, taskRunStatic);
-        }
-        taskRunStatic.update(itemNum, filterNum, timeCost);
+        taskStatics.computeIfAbsent(taskName, TaskRunStatic::new).update(itemNum, filterNum, timeCost);
     }
 
     private static class TaskRunStatic {
@@ -45,8 +40,8 @@ public class AutoSortForSerial {
                 Float unitCost = 1f * allCount / cost;
                 Float keepAbility = 1f * (allCount - filterCount) / allCount;
                 //保留能力弱并且用时短的最优
-                SortScoreMap.put(taskName, unitCost * keepAbility);
-                count=0;
+                SortScoreMap.put(this.taskName, unitCost * keepAbility);
+                count = 0;
                 allCount = 0;
                 filterCount = 0;
                 cost = 0;
