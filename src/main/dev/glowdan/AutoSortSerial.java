@@ -47,6 +47,9 @@ public class AutoSortForSerial {
                 //保留能力弱并且用时短的最优
                 SortScoreMap.put(taskName, unitCost * keepAbility);
                 updateSteps *= 2;
+                if (updateSteps > 1024) {
+                    updateSteps = 1024;
+                }
             }
         }
 
