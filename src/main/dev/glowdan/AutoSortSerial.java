@@ -43,7 +43,7 @@ public class AutoSortForSerial {
             cost += timeCost;
             if (count > updateSteps) {
                 Float unitCost = 1f * allCount / cost;
-                Float keepAbility = 1f * (allCount - filterCount) * allCount;
+                Float keepAbility = 1f * (allCount - filterCount) / allCount;
                 //保留能力弱并且用时短的最优
                 SortScoreMap.put(taskName, unitCost * keepAbility);
                 updateSteps *= 2;
