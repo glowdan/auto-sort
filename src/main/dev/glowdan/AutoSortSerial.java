@@ -46,6 +46,10 @@ public class AutoSortForSerial {
                 Float keepAbility = 1f * (allCount - filterCount) / allCount;
                 //保留能力弱并且用时短的最优
                 SortScoreMap.put(taskName, unitCost * keepAbility);
+                count=0;
+                allCount = 0;
+                filterCount = 0;
+                cost = 0;
                 updateSteps *= 2;
                 if (updateSteps > 1024) {
                     updateSteps = 1024;
